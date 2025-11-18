@@ -12,7 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 
-class AVCAuthenticationController extends Controller
+class AuthenticationController extends Controller
 {
     use HttpResponses;
     public function __construct(

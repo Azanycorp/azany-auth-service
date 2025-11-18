@@ -19,9 +19,14 @@ jobs:
           extensions: mbstring, intl, pdo_mysql
           coverage: none
 
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
+
+      - name: Generate application key
+        run: php artisan key:generate
+
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
 
       - name: Run Rector + Pest
         run: composer test
-

@@ -21,9 +21,6 @@ return RectorConfig::configure()
     ])
     ->withSetProviders(LaravelSetProvider::class)
     ->withComposerBased(laravel: true)
-    ->withSkip([
-        CompactToVariablesRector::class,
-    ])
     ->withRules([
         ResponseHelperCallToJsonResponseRector::class,
         EmptyToBlankAndFilledFuncRector::class,

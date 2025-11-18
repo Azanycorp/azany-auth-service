@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Verify;
@@ -9,15 +9,8 @@ use App\Services\AuthService;
 use App\Traits\HttpResponses;
 use App\Http\Requests\CodeRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PasscodeRequest;
-use App\Http\Requests\Api\LoginRequest;
-use App\Http\Requests\ResendEmailRequest;
-use App\Http\Requests\Api\RegisterRequest;
-use App\Http\Requests\ProfilepdateRequest;
-use App\Http\Requests\ChangePasswordRequest;
-use App\Http\Requests\VerifyPasscodeRequest;
-use App\Http\Requests\ProfilePhotoUpdateRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 
 class AVCAuthenticationController extends Controller
 {
@@ -35,6 +28,6 @@ class AVCAuthenticationController extends Controller
     {
         return $this->authService->login($request);
     }
-    
+
 
 }

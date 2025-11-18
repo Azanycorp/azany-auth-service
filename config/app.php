@@ -98,7 +98,7 @@ return [
     'cipher' => 'AES-256-CBC',
 
     'key' => env('APP_KEY'),
-    'api_key' => env('API_KEY'),
+    'avc_key' => env('AVC_KEY'),
     'azanypay_key' => env('AZANYPAY_KEY'),
     'previous_keys' => [
         ...array_filter(

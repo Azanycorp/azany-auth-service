@@ -9,13 +9,13 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::prefix('auth')->controller(AuthenticationController::class)->group(function () {
-    Route::prefix('avc')->group(function () {
+    Route::prefix('avc')->middleware('avc.key')->group(function () {
         Route::post('/register', 'register');
         Route::post('/login', 'login');
-    })->middleware('avc.key');
+    });
 
-    Route::prefix('azanypay')->group(function () {
+    Route::prefix('azanypay')->middleware('azanypay.key')->group(function () {
         Route::post('/register', 'register');
         Route::post('/login', 'login');
-    })->middleware('azanypay.key');
+    });
 });

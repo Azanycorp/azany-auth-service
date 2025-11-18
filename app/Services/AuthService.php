@@ -26,7 +26,7 @@ class AuthService
 
     public function register($request)
     {
-        $user = User::create([
+         User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
@@ -35,9 +35,7 @@ class AuthService
             'password' => bcrypt($request->password),
         ]);
 
-        $user->sendVerificationEmail();
-
-        return $this->successResponse('Registration successful. Kindly check your inbox for instructions on how to verify your account. Thanks.', new UserResource($user), Response::HTTP_CREATED);
+        return $this->successResponse('Registration successful. Kindly check your inbox for instructions on how to verify your account. Thanks.', [], Response::HTTP_CREATED);
     }
 
     // public function login($request)

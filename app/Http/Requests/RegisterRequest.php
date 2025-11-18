@@ -26,7 +26,7 @@ class RegisterRequest extends FormRequest
             'first_name' => ['required', 'string', 'alpha_dash', 'max:255'],
             'last_name' => ['required', 'string', 'alpha_dash', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'country_id' => ['required', 'integer'],
+            'country_id' => ['required', 'integer','between:1,250'],
         ];
     }
 }

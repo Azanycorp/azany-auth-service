@@ -12,11 +12,14 @@ class AuthService
 {
     use HttpResponse;
 
+    public function __construct(private readonly \Illuminate\Hashing\BcryptHasher $bcryptHasher)
+    {}
+
     public function customerSignUp($request): JsonResponse
     {
         try {
             $currencyCode = currencyCodeByCountryId($request->country_id);
-    
+
             $user = User::create([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
@@ -27,7 +30,7 @@ class AuthService
                 'default_currency' => $currencyCode,
                 'email_verified_at' => null,
                 'is_verified' => true,
-                'password' => bcrypt($request->password),
+                'password' => $this->bcryptHasher->make($request->password),
                 'signed_up_from' => SignedUpFrom::AZANY_B2C->value,
             ]);
 

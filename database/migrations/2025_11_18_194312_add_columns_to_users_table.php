@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('state_id')->nullable();
             $table->string('default_currency')->nullable();
             $table->boolean('is_verified')->nullable();
-            $table->string('signed_up_from');
+            $table->string('signed_up_from')->nullable();
             $table->string('password')->nullable();
         });
     }

@@ -14,7 +14,6 @@ use App\Http\Requests\RegisterRequest;
 
 class AuthenticationController extends Controller
 {
-    use HttpResponses;
     public function __construct(
         private AuthService $authService
     ) {}

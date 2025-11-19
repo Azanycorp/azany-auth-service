@@ -3,13 +3,13 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Traits\HttpResponse;
 use Illuminate\Http\Request;
-use App\Traits\HttpResponses;
 use Symfony\Component\HttpFoundation\Response;
 
 class AVCKeyMiddleware
 {
-    use HttpResponses;
+    use HttpResponse;
     /**
      * Handle an incoming request.
      *
@@ -20,7 +20,7 @@ class AVCKeyMiddleware
         $apiKey = $request->header('X-AVC-Key');
 
         if ($apiKey !== config('app.avc_key')) {
-            return $this->errorResponse('Unauthorized access', [], 401);
+            return $this->error(null,'Unauthorized access', 401);
         }
 
         return $next($request);

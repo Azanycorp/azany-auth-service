@@ -7,12 +7,13 @@ use App\Enums\UserType;
 use App\Enums\SignedUpFrom;
 use App\Traits\HttpResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Hashing\BcryptHasher;
 
 class AuthService
 {
     use HttpResponse;
 
-    public function __construct(private readonly \Illuminate\Hashing\BcryptHasher $bcryptHasher)
+    public function __construct(private readonly BcryptHasher $bcryptHasher)
     {}
 
     public function customerSignUp($request): JsonResponse

@@ -22,8 +22,8 @@ class GeneralController extends Controller
         return $this->generalService->runMigration();
     }
 
-    public function seedRun()
+    public function seedRun(Request $request)
     {
-        return $this->generalService->seedRun();
+        return $this->generalService->seedRun($request);
     }
 }

@@ -63,4 +63,18 @@ class AuthService
 
         return $this->success($user);
     }
+
+    public function verifyCode($request)
+    {
+        $user = User::where('email', $request->email)->first();
+        if (! $user) {
+            return $this->error(null, 'User Record not found.', Response::HTTP_NOT_FOUND);
+        }
+        $user->update([
+            'email_verified_at' => now(),
+            'status' => UserStatus::ACTIVE
+        ]);
+
+        return $this->success(Response::HTTP_OK);
+    }
 }

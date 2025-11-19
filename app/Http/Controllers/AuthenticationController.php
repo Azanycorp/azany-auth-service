@@ -28,5 +28,10 @@ class AuthenticationController extends Controller
         return $this->authService->login($request);
     }
 
+    public function verifyCode(Request $request)
+    {
+        return $this->authService->verifyCode($request);
+    }
+
 
 }

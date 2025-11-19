@@ -20,11 +20,13 @@ Route::prefix('auth')
                 Route::prefix('avc')->middleware('avc.key')->group(function () {
                     Route::post('/register', 'register');
                     Route::post('/login', 'login');
+                    Route::post('/verify-code', 'verifyCode');
                 });
 
                 Route::prefix('azanypay')->middleware('azanypay.key')->group(function () {
                     Route::post('/register', 'register');
                     Route::post('/login', 'login');
+                    Route::post('/verify-code', 'verifyCode');
                 });
             });
 

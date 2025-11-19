@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class AuthService
 {
     use HttpResponse;
+    public function __construct(private readonly \Illuminate\Contracts\Hashing\Hasher $hasher, private readonly \Illuminate\Hashing\BcryptHasher $bcryptHasher) {}
 
     public function register($request)
     {
@@ -34,7 +35,7 @@ class AuthService
                 'email' => $request->email,
                 'country_id' => $request->country_id,
                 'status' => UserStatus::PENDING,
-                'password' => bcrypt($request->password),
+                'password' => $this->bcryptHasher->make($request->password),
             ]);
 
             return $this->success(Response::HTTP_CREATED);
@@ -46,21 +47,20 @@ class AuthService
     public function login($request)
     {
 
-            $user = User::select(['email_verified_at', 'email', 'password', 'status'])->where('email', $request->email)->first();
+        $user = User::select(['email_verified_at', 'email', 'password', 'status'])->where('email', $request->email)->first();
 
-            if (! $user || ! Hash::check($request->password, $user->password)) {
-                return $this->error(null,'Invalid credentials.');
-            }
+        if (! $user || ! $this->hasher->check($request->password, $user->password)) {
+            return $this->error(null, 'Invalid credentials.');
+        }
 
-            if ($user->status !== UserStatus::ACTIVE) {
-                return $this->error(null,"User account is not active. Please contact support.");
-            }
+        if ($user->status !== UserStatus::ACTIVE) {
+            return $this->error(null, "User account is not active. Please contact support.");
+        }
 
-            if (is_null($user->email_verified_at)) {
-                return $this->error(null,'You need to verify your account. Please check your email for instructions.');
-            }
+        if (is_null($user->email_verified_at)) {
+            return $this->error(null, 'You need to verify your account. Please check your email for instructions.');
+        }
 
-            return $this->success($user);
-
+        return $this->success($user);
     }
 }

@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 class AVCKeyMiddleware
 {
     use HttpResponse;
+    public function __construct(private readonly \Illuminate\Contracts\Config\Repository $repository) {}
+
     /**
      * Handle an incoming request.
      *
@@ -19,8 +21,8 @@ class AVCKeyMiddleware
     {
         $apiKey = $request->header('X-AVC-Key');
 
-        if ($apiKey !== config('app.avc_key')) {
-            return $this->error(null,'Unauthorized access', 401);
+        if ($apiKey !== $this->repository->get('app.avc_key')) {
+            return $this->error(null, 'Unauthorized access', 401);
         }
 
         return $next($request);

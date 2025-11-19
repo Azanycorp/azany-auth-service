@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 class AzanypayKeyMiddleware
 {
     use HttpResponse;
+    public function __construct(private readonly \Illuminate\Contracts\Config\Repository $repository) {}
+
     /**
      * Handle an incoming request.
      *
@@ -19,8 +21,8 @@ class AzanypayKeyMiddleware
     {
         $apiKey = $request->header('X-APAY-Key');
 
-        if ($apiKey !== config('app.azanypay_key')) {
-            return $this->error(null,'Unauthorized access', 401);
+        if ($apiKey !== $this->repository->get('app.azanypay_key')) {
+            return $this->error(null, 'Unauthorized access', 401);
         }
 
         return $next($request);

@@ -100,6 +100,7 @@ return [
     'key' => env('APP_KEY'),
     'avc_key' => env('AVC_KEY'),
     'azanypay_key' => env('AZANYPAY_KEY'),
+    'miv_key' => env('MIV_KEY'),
     'previous_keys' => [
         ...array_filter(
             explode(',', (string) env('APP_PREVIOUS_KEYS', ''))

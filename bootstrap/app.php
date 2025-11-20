@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Application;
 use App\Http\Middleware\AVCKeyMiddleware;
+use App\Http\Middleware\MivKeyMiddleware;
 use App\Http\Middleware\AzanypayKeyMiddleware;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -18,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'avc.key' => AVCKeyMiddleware::class,
             'azanypay.key' => AzanypayKeyMiddleware::class,
+            'miv.key' => MivKeyMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

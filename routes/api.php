@@ -28,6 +28,11 @@ Route::prefix('auth')
                     Route::post('/login', 'login');
                     Route::post('/verify-code', 'verifyCode');
                 });
+                Route::prefix('miv')->middleware('miv.key')->group(function () {
+                    Route::post('/register', 'register');
+                    Route::post('/login', 'login');
+                    Route::post('/verify-code', 'verifyCode');
+                });
             });
 
         // Run basic command

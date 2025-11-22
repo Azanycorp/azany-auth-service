@@ -11,6 +11,7 @@ use App\Http\Requests\CodeRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Actions\CreateUserAction;
 
 class AuthenticationController extends Controller
 {
@@ -18,9 +19,9 @@ class AuthenticationController extends Controller
         private AuthService $authService
     ) {}
 
-    public function register(RegisterRequest $request)
+    public function register(RegisterRequest $request, CreateUserAction $createUserAction)
     {
-        return $this->authService->register($request);
+        return $this->authService->register($request, $createUserAction);
     }
 
     public function login(LoginRequest $request)

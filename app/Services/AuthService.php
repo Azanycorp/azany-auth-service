@@ -2,43 +2,37 @@
 
 namespace App\Services;
 
-use App\Models\Blog;
+use App\DTO\CreateUserDto;
 use App\Models\User;
-use App\Models\Verify;
 use App\Enum\UserStatus;
-use App\Models\ActivityLog;
 use App\Traits\HttpResponse;
-use App\Traits\HttpResponses;
 use Illuminate\Http\Response;
-use App\Mail\TwoFactorCodeMail;
-use App\Models\AccountDeletion;
-use App\Traits\CreateActivityLog;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Mail;
-use App\Http\Resources\Api\UserResource;
-use App\Http\Resources\Api\LoginResource;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Contracts\Hashing\Hasher;
+use Illuminate\Hashing\BcryptHasher;
 
 class AuthService
 {
     use HttpResponse;
-    public function __construct(private readonly \Illuminate\Contracts\Hashing\Hasher $hasher, private readonly \Illuminate\Hashing\BcryptHasher $bcryptHasher) {}
 
-    public function register($request)
+    public function __construct(
+        private readonly Hasher $hasher,
+        private readonly BcryptHasher $bcryptHasher
+    ) {}
+
+    public function register($request, $createUserAction)
     {
         try {
-            User::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'country_id' => $request->country_id,
-                'status' => UserStatus::PENDING,
-                'password' => $this->bcryptHasher->make($request->password),
-            ]);
+            $currencyCode = currencyCodeByCountryId($request->country_id);
 
-            return $this->success(Response::HTTP_CREATED);
+            $user = $createUserAction->handle(
+                new CreateUserDto(
+                    $request,
+                    $this->bcryptHasher,
+                    $currencyCode
+                )
+            );
+
+            return $this->success($user, 'Account created successfully.', Response::HTTP_CREATED);
         } catch (\Exception $e) {
             return $this->error(null, $e->getMessage(), 400);
         }
@@ -46,35 +40,41 @@ class AuthService
 
     public function login($request)
     {
+        $user = User::where('email', $request->email)->first();
 
-        $user = User::select(['email_verified_at', 'email', 'password', 'status'])->where('email', $request->email)->first();
+        if (! $user) {
+            return $this->error(null, 'Account not found.', 401);
+        }
 
-        if (! $user || ! $this->hasher->check($request->password, $user->password)) {
-            return $this->error(null, 'Invalid credentials.');
+        if (! $this->hasher->check($request->password, $user->password)) {
+            return $this->error(null, 'Invalid credentials.', 401);
         }
 
         if ($user->status !== UserStatus::ACTIVE) {
-            return $this->error(null, "User account is not active. Please contact support.");
+            return $this->error(null, 'User account is not active. Please contact support.', 403);
         }
 
         if (is_null($user->email_verified_at)) {
-            return $this->error(null, 'You need to verify your account. Please check your email for instructions.');
+            return $this->error(null, 'You need to verify your account. Please check your email for instructions.', 403);
         }
 
-        return $this->success($user);
+        return $this->success($user, 'Login successful.');
     }
 
     public function verifyCode($request)
     {
         $user = User::where('email', $request->email)->first();
+
         if (! $user) {
             return $this->error(null, 'User Record not found.', Response::HTTP_NOT_FOUND);
         }
+
         $user->update([
             'email_verified_at' => now(),
+            'is_verified' => true,
             'status' => UserStatus::ACTIVE
         ]);
 
-        return $this->success(Response::HTTP_OK);
+        return $this->success(null, 'Email verified successfully.');
     }
 }

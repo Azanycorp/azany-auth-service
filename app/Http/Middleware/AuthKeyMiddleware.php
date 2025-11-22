@@ -6,11 +6,16 @@ use Closure;
 use App\Traits\HttpResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Routing\ResponseFactory;
 
 class AuthKeyMiddleware
 {
     use HttpResponse;
-    public function __construct(private readonly \Illuminate\Contracts\Config\Repository $repository) {}
+    public function __construct(
+        private readonly Repository $repository,
+        private readonly ResponseFactory $responseFactory
+    ) {}
 
     /**
      * Handle an incoming request.

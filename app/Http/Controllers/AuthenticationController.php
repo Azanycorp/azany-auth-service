@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use App\Models\Verify;
+use Illuminate\Http\Request;
+use App\Services\AuthService;
+use App\Traits\HttpResponses;
+use App\Http\Requests\CodeRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Actions\CreateUserAction;
+
+class AuthenticationController extends Controller
+{
+    public function __construct(
+        private AuthService $authService
+    ) {}
+
+    public function register(RegisterRequest $request, CreateUserAction $createUserAction)
+    {
+        return $this->authService->register($request, $createUserAction);
+    }
+
+    public function login(LoginRequest $request)
+    {
+        return $this->authService->login($request);
+    }
+
+    public function verifyCode(Request $request)
+    {
+        return $this->authService->verifyCode($request);
+    }
+
+
+}

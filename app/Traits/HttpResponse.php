@@ -3,10 +3,11 @@
 namespace App\Traits;
 
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 trait HttpResponse
 {
-    protected function success($data, $message = null, $code = 200)
+    protected function success($data, $message = null, $code = Response::HTTP_OK)
     {
         return new JsonResponse([
             'status' => true,
@@ -15,7 +16,7 @@ trait HttpResponse
         ], $code);
     }
 
-    protected function error($data, $message = null, $code = 400)
+    protected function error($data, $message = null, $code = Response::HTTP_BAD_REQUEST)
     {
         return new JsonResponse([
             'status' => false,
@@ -24,7 +25,7 @@ trait HttpResponse
         ], $code);
     }
 
-    protected function withPagination($collection, ?string $message = null, $code = 200, ?array $extraMeta = [])
+    protected function withPagination($collection, ?string $message = null, $code = Response::HTTP_OK, ?array $extraMeta = [])
     {
         return new JsonResponse([
             'status' => true,

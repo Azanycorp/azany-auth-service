@@ -18,10 +18,23 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
+     protected $fillable = [
+        'first_name',
+        'last_name',
         'email',
+        'type',
+        'phone',
+        'is_verified',
+        'country_id',
+        'state_id',
         'password',
+        'profile_photo',
+        'verification_code',
+        'verification_code_expire_at',
+        'status',
+        'email_verified_at',
+        'signed_up_from',
+        'default_currency',
     ];
 
     /**
@@ -44,6 +57,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_verified' => 'boolean',
         ];
     }
 }

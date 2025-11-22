@@ -22,25 +22,19 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'email',
+        'type',
         'phone',
-        'account_number',
+        'is_verified',
         'country_id',
-        'state',
-        'city',
-        'address',
-        'zip_code',
+        'state_id',
         'password',
         'profile_photo',
         'verification_code',
         'verification_code_expire_at',
         'status',
         'email_verified_at',
-        'kyc_verification',
-        'two_factor_enabled',
-        'biometric_enabled',
-        'lock_screen_enabled',
-        'lock_screen_pin',
-        'last_login',
+        'signed_up_from',
+        'default_currency',
     ];
 
     /**
@@ -63,6 +57,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_verified' => 'boolean',
         ];
     }
 }

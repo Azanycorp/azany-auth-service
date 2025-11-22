@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\B2C;
 
-use App\Models\User;
-use App\Enums\UserType;
-use App\Enums\SignedUpFrom;
+use App\DTO\CreateUserDto;
+use App\Enum\UserType;
+use App\Enum\SignedUpFrom;
 use App\Traits\HttpResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Hashing\BcryptHasher;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthService
 {
@@ -16,28 +19,24 @@ class AuthService
     public function __construct(private readonly BcryptHasher $bcryptHasher)
     {}
 
-    public function customerSignUp($request): JsonResponse
+    public function customerSignUp($request, $createUserAction): JsonResponse
     {
         try {
             $currencyCode = currencyCodeByCountryId($request->country_id);
 
-            $user = User::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'type' => UserType::B2C_CUSTOMER->value,
-                'country_id' => $request->country_id,
-                'state_id' => $request->state_id,
-                'default_currency' => $currencyCode,
-                'email_verified_at' => null,
-                'is_verified' => true,
-                'password' => $this->bcryptHasher->make($request->password),
-                'signed_up_from' => SignedUpFrom::AZANY_B2C->value,
-            ]);
+            $user = $createUserAction->handle(
+                new CreateUserDto(
+                    $request,
+                    $this->bcryptHasher,
+                    UserType::B2C_CUSTOMER->value,
+                    $currencyCode,
+                    SignedUpFrom::AZANY_B2C->value
+                )
+            );
 
-            return $this->success($user, 'Account created successfully', 201);
+            return $this->success($user, 'Account created successfully', Response::HTTP_CREATED);
         } catch (\Exception $e) {
-            return $this->error(null, $e->getMessage(), 400);
+            return $this->error(null, $e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreateUserAction;
+use App\Http\Requests\B2CCustomerSignupRequest;
 use App\Services\B2C\AuthService;
 use Illuminate\Http\Request;
 
@@ -12,8 +14,8 @@ class B2CController extends Controller
     )
     {}
 
-    public function customerSignUp(Request $request)
+    public function customerSignUp(B2CCustomerSignupRequest $request, CreateUserAction $createUserAction)
     {
-        return $this->authService->customerSignUp($request);
+        return $this->authService->customerSignUp($request, $createUserAction);
     }
 }

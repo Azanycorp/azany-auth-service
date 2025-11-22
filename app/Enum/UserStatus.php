@@ -4,13 +4,13 @@ namespace App\Enum;
 
 enum UserStatus: string
 {
-    const ACTIVE = 'active';
-    const BLOCKED = 'blocked';
-    const DELETED = 'deleted';
-    const PENDING = 'pending';
-    const SUSPENDED = 'suspended';
-    const VERIFIED = 'verified';
-    const UNVERIFIED = 'unverified';
-    const CLOSED = 'closed';
-    const TERMINATED = 'terminated';
+    case ACTIVE = 'active';
+    case BLOCKED = 'blocked';
+    case DELETED = 'deleted';
+    case PENDING = 'pending';
+    case SUSPENDED = 'suspended';
+    case VERIFIED = 'verified';
+    case UNVERIFIED = 'unverified';
+    case CLOSED = 'closed';
+    case TERMINATED = 'terminated';
 }

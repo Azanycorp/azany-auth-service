@@ -16,17 +16,17 @@ final readonly class CreateUserAction
     public function handle(CreateUserDto $dto): User
     {
         return User::create([
-            'first_name' => $dto->request->first_name,
-            'last_name' => $dto->request->last_name,
-            'email' => $dto->request->email,
+            'first_name' => $dto->request->string('first_name'),
+            'last_name' => $dto->request->string('last_name'),
+            'email' => $dto->request->string('email'),
             'email_verified_at' => null,
             'is_verified' => false,
-            'type' => $dto->request->type,
-            'country_id' => $dto->request->country_id,
-            'state_id' => $dto->request->state_id,
+            'type' => $dto->request->string('type'),
+            'country_id' => $dto->request->integer('country_id'),
+            'state_id' => $dto->request->integer('state_id'),
             'default_currency' => $dto->currencyCode,
-            'password' => $dto->bcryptHasher->make($dto->request->password),
-            'signed_up_from' => $dto->request->signed_up_from,
+            'password' => bcrypt($dto->request->string('password')),
+            'signed_up_from' => $dto->request->string('signed_up_from'),
             'status' => UserStatus::PENDING,
         ]);
     }

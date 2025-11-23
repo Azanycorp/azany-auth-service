@@ -11,6 +11,7 @@ use RectorLaravel\Rector\MethodCall\ResponseHelperCallToJsonResponseRector;
 use RectorLaravel\Set\LaravelLevelSetList;
 use RectorLaravel\Set\LaravelSetList;
 use RectorLaravel\Set\LaravelSetProvider;
+use RectorLaravel\Rector\FuncCall\ArgumentFuncCallToMethodCallRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -34,6 +35,9 @@ return RectorConfig::configure()
     ])
     ->withConfiguredRule(RemoveDumpDataDeadCodeRector::class, [
         'dd', 'dump', 'var_dump'
+    ])
+    ->withSkip([
+        ArgumentFuncCallToMethodCallRector::class,
     ])
     ->withCache(__DIR__.'/storage/rector', FileCacheStorage::class)
     ->withPhpVersion(PhpVersion::PHP_83);

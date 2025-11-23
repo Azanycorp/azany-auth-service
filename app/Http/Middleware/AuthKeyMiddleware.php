@@ -7,14 +7,13 @@ use App\Traits\HttpResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Contracts\Config\Repository;
-use Illuminate\Contracts\Routing\ResponseFactory;
 
 class AuthKeyMiddleware
 {
     use HttpResponse;
+
     public function __construct(
         private readonly Repository $repository,
-        private readonly ResponseFactory $responseFactory
     ) {}
 
     /**
@@ -30,11 +29,11 @@ class AuthKeyMiddleware
         $receivedValue = $request->header($headerName);
 
         if (! $receivedValue) {
-            return $this->responseFactory->json(['error' => 'Unauthorized access. Missing required header.'], 401);
+            return $this->error(null, 'Unauthorized access. Missing required header.', 401);
         }
 
         if ($receivedValue !== $expectedValue) {
-            return $this->responseFactory->json(['error' => 'Unauthorized access. Invalid header value.'], 401);
+            return $this->error(null, 'Unauthorized access. Invalid header value.', 401);
         }
 
         return $next($request);

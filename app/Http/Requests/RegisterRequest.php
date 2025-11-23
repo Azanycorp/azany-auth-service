@@ -17,8 +17,7 @@ class RegisterRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'type' => ['required', 'string', Rule::in(UserType::values())],
             'country_id' => ['required', 'integer', 'exists:countries,id'],
-            'state_id' => ['required', 'integer', 'exists:states,id'],
-            'default_currency' => ['required', 'string', 'exists:currencies,code'],
+            'state_id' => ['nullable', 'integer', 'exists:states,id'],
             'password' => ['required', 'string', Password::defaults()],
             'signed_up_from' => ['required', 'string'],
         ];

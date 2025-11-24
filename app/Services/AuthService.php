@@ -7,16 +7,13 @@ use App\Models\User;
 use App\Enum\UserStatus;
 use App\Traits\HttpResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Hashing\BcryptHasher;
-use Illuminate\Support\Facades\Hash;
 
 class AuthService
 {
     use HttpResponse;
 
     public function __construct(
-        private readonly Hasher $hasher,
         private readonly BcryptHasher $bcryptHasher
     ) {}
 

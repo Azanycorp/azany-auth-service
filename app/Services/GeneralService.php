@@ -21,7 +21,7 @@ class GeneralService
     public function runMigration()
     {
         $this->kernel->call('migrate', ['--force' => true]);
-        return $this->success(['output' => $this->kernel->call->output()], 'migrations run successfully!');
+        return $this->success(['output' => $this->kernel->output()], 'migrations run successfully!');
     }
 
     public function seedRun($request)
@@ -38,7 +38,7 @@ class GeneralService
                 '--force' => true,
             ]);
 
-            return $this->success(['output' => $this->kernel->call->output()], "{$seederClass} executed successfully.");
+            return $this->success(['output' => $this->kernel->output()], "{$seederClass} executed successfully.");
         } catch (\Exception $e) {
             return $this->error(null, $e->getMessage(), 404);
         }

@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Verify;
 use Illuminate\Http\Request;
 use App\Services\AuthService;
-use App\Traits\HttpResponses;
-use App\Http\Requests\CodeRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Actions\CreateUserAction;
+use App\Http\Requests\UpdateAccountRequest;
 
 class AuthenticationController extends Controller
 {
@@ -34,5 +31,8 @@ class AuthenticationController extends Controller
         return $this->authService->verifyCode($request);
     }
 
-
+    public function updateAccount(UpdateAccountRequest $request)
+    {
+        return $this->authService->updateAccount($request);
+    }
 }

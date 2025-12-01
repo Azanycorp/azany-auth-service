@@ -13,6 +13,7 @@ Route::prefix('auth')
                 Route::post('/register', 'register');
                 Route::post('/login', 'login');
                 Route::post('/verify-code', 'verifyCode');
+                Route::patch('/update-account', 'updateAccount');
             });
 
         // Run basic command

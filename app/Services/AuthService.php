@@ -75,4 +75,17 @@ class AuthService
 
         return $this->success(null, 'Email verified successfully.');
     }
+
+    public function updateAccount($request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if (! $user) {
+            return $this->error(null, 'User Record not found.', Response::HTTP_NOT_FOUND);
+        }
+
+        $user->update($request->safe()->except(['email']));
+
+        return $this->success(null, 'Account updated successfully.');
+    }
 }

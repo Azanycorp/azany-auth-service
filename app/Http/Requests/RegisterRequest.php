@@ -14,7 +14,7 @@ class RegisterRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'alpha_dash', 'max:255'],
             'last_name' => ['required', 'string', 'alpha_dash', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'type' => ['required', 'string', Rule::in(UserType::values())],
             'country_id' => ['required', 'integer', 'exists:countries,id'],
             'state_id' => ['nullable', 'integer', 'exists:states,id'],

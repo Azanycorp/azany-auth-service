@@ -14,7 +14,7 @@ Route::prefix('auth')
                 Route::post('/login', 'login');
                 Route::post('/verify-code', 'verifyCode');
                 Route::patch('/update-account', 'updateAccount');
-                Route::delete('/delete-account', 'updateAccount');
+                Route::delete('/delete-account', 'deleteUserAccount');
             });
 
         // Run basic command

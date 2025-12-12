@@ -92,7 +92,7 @@ class AuthService
 
     public function deleteUserAccount($request)
     {
-        $user = User::where('email', $request->email)->first();
+       $user = User::where('email', $request->email)->first();
 
         if (! $user) {
             return $this->error(null, 'User Record not found.', Response::HTTP_NOT_FOUND);
@@ -101,6 +101,8 @@ class AuthService
         $user->update([
             'email' => 'deleted_' . $user->id . '_' . $user->email,
         ]);
+
+        $user->delete();
 
         return $this->success(null, 'Account deleted successfully.');
     }

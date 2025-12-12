@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
-use App\DTO\CreateUserDto;
 use App\Models\User;
 use App\Enum\UserStatus;
+use App\DTO\CreateUserDto;
 use App\Traits\HttpResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Hashing\BcryptHasher;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthService
 {
@@ -87,5 +88,20 @@ class AuthService
         $user->update($request->safe()->except(['email']));
 
         return $this->success(null, 'Account updated successfully.');
+    }
+
+    public function deleteUserAccount($request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if (! $user) {
+            return $this->error(null, 'User Record not found.', Response::HTTP_NOT_FOUND);
+        }
+
+        $user->update([
+            'email' => 'deleted_' . $user->id . '_' . $user->email,
+        ]);
+
+        return $this->success(null, 'Account deleted successfully.');
     }
 }

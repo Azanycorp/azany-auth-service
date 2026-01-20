@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
+use Rector\Transform\Rector\StaticCall\StaticCallToMethodCallRector;
 use Rector\ValueObject\PhpVersion;
+use RectorLaravel\Rector\ClassMethod\AddGenericReturnTypeToRelationsRector;
 use RectorLaravel\Rector\Empty_\EmptyToBlankAndFilledFuncRector;
 use RectorLaravel\Rector\FuncCall\RemoveDumpDataDeadCodeRector;
 use RectorLaravel\Rector\MethodCall\ResponseHelperCallToJsonResponseRector;
@@ -12,6 +13,7 @@ use RectorLaravel\Set\LaravelLevelSetList;
 use RectorLaravel\Set\LaravelSetList;
 use RectorLaravel\Set\LaravelSetProvider;
 use RectorLaravel\Rector\FuncCall\ArgumentFuncCallToMethodCallRector;
+use RectorLaravel\Rector\FuncCall\HelperFuncCallToFacadeClassRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -37,7 +39,9 @@ return RectorConfig::configure()
         'dd', 'dump', 'var_dump'
     ])
     ->withSkip([
+        HelperFuncCallToFacadeClassRector::class,
+        StaticCallToMethodCallRector::class,
         ArgumentFuncCallToMethodCallRector::class,
+        AddGenericReturnTypeToRelationsRector::class,
     ])
-    ->withCache(__DIR__.'/storage/rector', FileCacheStorage::class)
-    ->withPhpVersion(PhpVersion::PHP_83);
+    ->withPhpVersion(PhpVersion::PHP_84);

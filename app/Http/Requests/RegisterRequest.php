@@ -11,20 +11,6 @@ use Illuminate\Support\Str;
 
 class RegisterRequest extends FormRequest
 {
-    /**
-     * @param array                $query      The GET parameters
-     * @param array                $request    The POST parameters
-     * @param array                $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
-     * @param array                $cookies    The COOKIE parameters
-     * @param array                $files      The FILES parameters
-     * @param array                $server     The SERVER parameters
-     * @param string|resource|null $content    The raw body data
-     */
-    public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null, private readonly \Illuminate\Foundation\Application $application)
-    {
-        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
-    }
-
     public function rules(): array
     {
         $rules = [
@@ -38,7 +24,7 @@ class RegisterRequest extends FormRequest
             'signed_up_from' => ['required', 'string'],
         ];
 
-        if ($this->application->environment('production')) {
+        if (App::environment('production')) {
             $rules['email'][] = function ($attribute, $value, $fail) {
                 $blockedDomains = config('disposableemail.domains', []);
 

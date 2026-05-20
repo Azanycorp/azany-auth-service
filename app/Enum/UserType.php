@@ -15,6 +15,8 @@ enum UserType: string
     case AVC_USER = 'avc_user';
     case MIV_USER = 'miv_user';
     case AZANYPAY_USER = 'azanypay_user';
+    case AZANYAUTO_BUYER = 'azanyauto_buyer';
+    case AZANYAUTO_DEALER = 'azanyauto_dealer';
 
     public static function values(): array
     {

@@ -41,8 +41,9 @@ class AuthService
         $user = User::where('email', $request->string('email'))->first();
 
         if (! $user->is_verified) {
-            return $this->error(null,[
-            'is_verified' => false], 403);
+            return $this->error([
+                'is_verified' => false,
+            ], 'Your account is not verified.', 403);
         }
 
         if ($user->status !== UserStatus::ACTIVE) {
@@ -53,7 +54,8 @@ class AuthService
 
         if ($user->email_verified_at === null) {
             return $this->error([
-                'email_verified_at' => null,
+                'status' => $user->status,
+                'email_verified' => false,
             ], 'You need to verify your account. Please check your email for instructions.', 403);
         }
 

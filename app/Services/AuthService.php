@@ -53,7 +53,7 @@ class AuthService
 
         if ($user->email_verified_at === null) {
             return $this->error([
-                'email_verified' => false,
+                'email_verified_at' => null,
             ], 'You need to verify your account. Please check your email for instructions.', 403);
         }
 

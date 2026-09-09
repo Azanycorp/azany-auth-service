@@ -40,6 +40,10 @@ class AuthService
     {
         $user = User::where('email', $request->string('email'))->first();
 
+        if (! $user) {
+            return $this->error(null, 'Account not found.', 401);
+        }
+
         if (! $user->is_verified) {
             return $this->error([
                 'is_verified' => false,

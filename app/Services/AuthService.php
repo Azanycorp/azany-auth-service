@@ -102,7 +102,7 @@ class AuthService
         $user = User::where('email', $request->email)->first();
 
         if (! $user) {
-            return $this->error(null, 'User Record not found.', Response::HTTP_NOT_FOUND);
+            return $this->error(null, 'User Record not found.', 404);
         }
 
        $user->update([

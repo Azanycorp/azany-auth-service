@@ -9,8 +9,6 @@ use App\Traits\HttpResponse;
 use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class AuthService
 {
@@ -18,8 +16,7 @@ class AuthService
 
     public function __construct(
         private readonly BcryptHasher $bcryptHasher
-    ) {
-    }
+    ) {}
 
     public function register($request, $createUserAction): JsonResponse
     {
@@ -44,11 +41,11 @@ class AuthService
     {
         $user = User::where('email', $request->string('email'))->first();
 
-        if (!$user) {
+        if (! $user) {
             return $this->error(null, 'Account not found.', 401);
         }
 
-        if (!$user->is_verified) {
+        if (! $user->is_verified) {
             return $this->error([
                 'is_verified' => false,
             ], 'Your account is not verified.', 403);
@@ -74,7 +71,7 @@ class AuthService
     {
         $user = User::where('email', $request->string('email'))->first();
 
-        if (!$user) {
+        if (! $user) {
             return $this->error(null, 'User Record not found.', Response::HTTP_NOT_FOUND);
         }
 
@@ -91,7 +88,7 @@ class AuthService
     {
         $user = User::where('email', $request->email)->first();
 
-        if (!$user) {
+        if (! $user) {
             return $this->error(null, 'User Record not found.', Response::HTTP_NOT_FOUND);
         }
 
@@ -104,7 +101,7 @@ class AuthService
     {
         $user = User::where('email', $request->email)->first();
 
-        if (!$user) {
+        if (! $user) {
             return $this->error(null, 'User Record not found.', 404);
         }
 

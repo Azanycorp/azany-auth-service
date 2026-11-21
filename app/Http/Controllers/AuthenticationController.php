@@ -39,5 +39,5 @@ class AuthenticationController extends Controller
     public function deleteAccount(Request $request): JsonResponse
     {
         return $this->authService->deleteAccount($request);
-    }    
+    }
 }

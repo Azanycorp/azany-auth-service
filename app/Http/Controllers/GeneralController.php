@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\GeneralService;
+use Illuminate\Http\Request;
 
 class GeneralController extends Controller
 {
     public function __construct(
         protected readonly GeneralService $generalService
-    )
-    {}
+    ) {}
 
     public function clearCache()
     {

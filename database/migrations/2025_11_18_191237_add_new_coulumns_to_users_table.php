@@ -35,7 +35,7 @@ return new class extends Migration
                 'verification_code',
                 'verification_code_expire_at',
                 'status',
-                'last_login'
+                'last_login',
             ]);
         });
     }

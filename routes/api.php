@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\GeneralController;
+use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')
     ->group(function () {
@@ -14,6 +13,8 @@ Route::prefix('auth')
                 Route::post('/login', 'login');
                 Route::post('/verify-code', 'verifyCode');
                 Route::patch('/update-account', 'updateAccount');
+                Route::post('/delete-account', 'deleteAccount');
+                Route::post('/delete-accounts', 'bulkDeleteAccounts');
             });
 
         // Run basic command

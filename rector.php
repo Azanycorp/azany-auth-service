@@ -7,13 +7,13 @@ use Rector\Transform\Rector\StaticCall\StaticCallToMethodCallRector;
 use Rector\ValueObject\PhpVersion;
 use RectorLaravel\Rector\ClassMethod\AddGenericReturnTypeToRelationsRector;
 use RectorLaravel\Rector\Empty_\EmptyToBlankAndFilledFuncRector;
+use RectorLaravel\Rector\FuncCall\ArgumentFuncCallToMethodCallRector;
+use RectorLaravel\Rector\FuncCall\HelperFuncCallToFacadeClassRector;
 use RectorLaravel\Rector\FuncCall\RemoveDumpDataDeadCodeRector;
 use RectorLaravel\Rector\MethodCall\ResponseHelperCallToJsonResponseRector;
 use RectorLaravel\Set\LaravelLevelSetList;
 use RectorLaravel\Set\LaravelSetList;
 use RectorLaravel\Set\LaravelSetProvider;
-use RectorLaravel\Rector\FuncCall\ArgumentFuncCallToMethodCallRector;
-use RectorLaravel\Rector\FuncCall\HelperFuncCallToFacadeClassRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -36,7 +36,7 @@ return RectorConfig::configure()
         LaravelSetList::LARAVEL_TESTING,
     ])
     ->withConfiguredRule(RemoveDumpDataDeadCodeRector::class, [
-        'dd', 'dump', 'var_dump'
+        'dd', 'dump', 'var_dump',
     ])
     ->withSkip([
         HelperFuncCallToFacadeClassRector::class,

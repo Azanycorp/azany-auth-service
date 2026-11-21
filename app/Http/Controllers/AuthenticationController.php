@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Services\AuthService;
-use App\Http\Controllers\Controller;
+use App\Actions\CreateUserAction;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Actions\CreateUserAction;
 use App\Http\Requests\UpdateAccountRequest;
+use App\Services\AuthService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AuthenticationController extends Controller
 {
@@ -16,23 +16,33 @@ class AuthenticationController extends Controller
         private AuthService $authService
     ) {}
 
-    public function register(RegisterRequest $request, CreateUserAction $createUserAction)
+    public function register(RegisterRequest $request, CreateUserAction $createUserAction): JsonResponse
     {
         return $this->authService->register($request, $createUserAction);
     }
 
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): JsonResponse
     {
         return $this->authService->login($request);
     }
 
-    public function verifyCode(Request $request)
+    public function verifyCode(Request $request): JsonResponse
     {
         return $this->authService->verifyCode($request);
     }
 
-    public function updateAccount(UpdateAccountRequest $request)
+    public function updateAccount(UpdateAccountRequest $request): JsonResponse
     {
         return $this->authService->updateAccount($request);
+    }
+
+    public function deleteAccount(Request $request): JsonResponse
+    {
+        return $this->authService->deleteAccount($request);
+    }
+
+    public function bulkDeleteAccounts(Request $request): JsonResponse
+    {
+        return $this->authService->bulkDeleteAccounts($request);
     }
 }

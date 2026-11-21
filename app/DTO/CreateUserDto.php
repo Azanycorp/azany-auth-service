@@ -11,6 +11,5 @@ final readonly class CreateUserDto
         public RegisterRequest $request,
         public BcryptHasher $bcryptHasher,
         public string $currencyCode
-    )
-    {}
+    ) {}
 }

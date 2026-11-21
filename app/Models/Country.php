@@ -16,7 +16,7 @@ class Country extends Model
     protected function casts(): array
     {
         return [
-            'is_allowed' => 'boolean'
+            'is_allowed' => 'boolean',
         ];
     }
 }

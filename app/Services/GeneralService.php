@@ -2,25 +2,26 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Str;
 use App\Traits\HttpResponse;
+use Illuminate\Support\Str;
 
 class GeneralService
 {
     use HttpResponse;
 
-    public function __construct(private readonly \Illuminate\Contracts\Console\Kernel $kernel)
-    {}
+    public function __construct(private readonly \Illuminate\Contracts\Console\Kernel $kernel) {}
 
     public function clearCache()
     {
         $this->kernel->call('optimize:clear');
+
         return $this->success(null, 'cached files cleared!');
     }
 
     public function runMigration()
     {
         $this->kernel->call('migrate', ['--force' => true]);
+
         return $this->success(['output' => $this->kernel->output()], 'migrations run successfully!');
     }
 

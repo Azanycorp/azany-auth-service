@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Services\AuthService;
-use App\Http\Controllers\Controller;
+use App\Actions\CreateUserAction;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Actions\CreateUserAction;
 use App\Http\Requests\UpdateAccountRequest;
+use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AuthenticationController extends Controller
 {
@@ -40,5 +39,5 @@ class AuthenticationController extends Controller
     public function deleteAccount(Request $request): JsonResponse
     {
         return $this->authService->deleteAccount($request);
-    }
+    }    
 }

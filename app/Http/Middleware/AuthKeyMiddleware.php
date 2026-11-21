@@ -2,11 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use App\Traits\HttpResponse;
+use Closure;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Contracts\Config\Repository;
 
 class AuthKeyMiddleware
 {

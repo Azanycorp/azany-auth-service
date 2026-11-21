@@ -10,4 +10,3 @@ enum SignedUpFrom: string
     case AVC = 'avc';
     case MIV = 'miv';
 }
-

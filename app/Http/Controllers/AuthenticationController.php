@@ -40,4 +40,9 @@ class AuthenticationController extends Controller
     {
         return $this->authService->deleteAccount($request);
     }
+
+    public function bulkDeleteAccounts(Request $request): JsonResponse
+    {
+        return $this->authService->bulkDeleteAccounts($request);
+    }
 }

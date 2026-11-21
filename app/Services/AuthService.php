@@ -143,7 +143,7 @@ class AuthService
             $deleted[] = $email;
         }
 
-        if (empty($deleted)) {
+        if (blank($deleted)) {
             return $this->error([
                 'deleted' => $deleted,
                 'not_found' => $notFound,

@@ -115,43 +115,44 @@ class AuthService
     }
 
     public function bulkDeleteAccounts($request): JsonResponse
-{
-    $validated = $request->validate([
-        'emails'   => ['required', 'array', 'min:1', 'max:100'],
-        'emails.*' => ['required', 'email'],
-    ]);
+    {
+        $validated = $request->validate([
+            'emails' => ['required', 'array', 'min:1', 'max:100'],
+            'emails.*' => ['required', 'email'],
+        ]);
 
-    $users = User::whereIn('email', $validated['emails'])->get()->keyBy('email');
+        $users = User::whereIn('email', $validated['emails'])->get()->keyBy('email');
 
-    $deleted = [];
-    $notFound = [];
+        $deleted = [];
+        $notFound = [];
 
-    foreach ($validated['emails'] as $email) {
-        $user = $users->get($email);
+        foreach ($validated['emails'] as $email) {
+            $user = $users->get($email);
 
-        if (! $user) {
-            $notFound[] = $email;
-            continue;
+            if (! $user) {
+                $notFound[] = $email;
+
+                continue;
+            }
+
+            $user->update([
+                'email' => "deleted_{$user->id}_{$user->email}",
+            ]);
+            $user->delete();
+
+            $deleted[] = $email;
         }
 
-        $user->update([
-            'email' => "deleted_{$user->id}_{$user->email}",
-        ]);
-        $user->delete();
+        if (empty($deleted)) {
+            return $this->error([
+                'deleted' => $deleted,
+                'not_found' => $notFound,
+            ], 'No matching user records found.', Response::HTTP_NOT_FOUND);
+        }
 
-        $deleted[] = $email;
-    }
-
-    if (empty($deleted)) {
-        return $this->error([
-            'deleted'   => $deleted,
+        return $this->success([
+            'deleted' => $deleted,
             'not_found' => $notFound,
-        ], 'No matching user records found.', Response::HTTP_NOT_FOUND);
+        ], 'Accounts deleted successfully.');
     }
-
-    return $this->success([
-        'deleted'   => $deleted,
-        'not_found' => $notFound,
-    ], 'Accounts deleted successfully.');
-}
 }

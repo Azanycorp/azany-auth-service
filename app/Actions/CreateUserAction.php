@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\DTO\CreateUserDto;
-use App\Models\User;
 use App\Enum\UserStatus;
+use App\Models\User;
 
 final readonly class CreateUserAction
 {

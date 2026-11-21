@@ -7,6 +7,7 @@ use App\Enum\UserStatus;
 use App\Models\User;
 use App\Traits\HttpResponse;
 use Illuminate\Hashing\BcryptHasher;
+use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthService
@@ -17,7 +18,7 @@ class AuthService
         private readonly BcryptHasher $bcryptHasher
     ) {}
 
-    public function register($request, $createUserAction)
+    public function register($request, $createUserAction): JsonResponse
     {
         try {
             $currencyCode = currencyCodeByCountryId($request->integer('country_id'));
@@ -36,7 +37,7 @@ class AuthService
         }
     }
 
-    public function login($request)
+    public function login($request): JsonResponse
     {
         $user = User::where('email', $request->string('email'))->first();
 
@@ -66,7 +67,7 @@ class AuthService
         return $this->success($user, 'Login successful');
     }
 
-    public function verifyCode($request)
+    public function verifyCode($request): JsonResponse
     {
         $user = User::where('email', $request->string('email'))->first();
 
@@ -83,7 +84,7 @@ class AuthService
         return $this->success(null, 'Email verified successfully.');
     }
 
-    public function updateAccount($request)
+    public function updateAccount($request): JsonResponse
     {
         $user = User::where('email', $request->email)->first();
 
@@ -94,5 +95,64 @@ class AuthService
         $user->update($request->safe()->except(['email']));
 
         return $this->success(null, 'Account updated successfully.');
+    }
+
+    public function deleteAccount($request): JsonResponse
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if (! $user) {
+            return $this->error(null, 'User Record not found.', 404);
+        }
+
+        $user->update([
+            'email' => "deleted_{$user->id}_{$user->email}",
+        ]);
+
+        $user->delete();
+
+        return $this->success(null, 'Account deleted successfully.');
+    }
+
+    public function bulkDeleteAccounts($request): JsonResponse
+    {
+        $validated = $request->validate([
+            'emails' => ['required', 'array', 'min:1', 'max:100'],
+            'emails.*' => ['required', 'email'],
+        ]);
+
+        $users = User::whereIn('email', $validated['emails'])->get()->keyBy('email');
+
+        $deleted = [];
+        $notFound = [];
+
+        foreach ($validated['emails'] as $email) {
+            $user = $users->get($email);
+
+            if (! $user) {
+                $notFound[] = $email;
+
+                continue;
+            }
+
+            $user->update([
+                'email' => "deleted_{$user->id}_{$user->email}",
+            ]);
+            $user->delete();
+
+            $deleted[] = $email;
+        }
+
+        if (blank($deleted)) {
+            return $this->error([
+                'deleted' => $deleted,
+                'not_found' => $notFound,
+            ], 'No matching user records found.', Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->success([
+            'deleted' => $deleted,
+            'not_found' => $notFound,
+        ], 'Accounts deleted successfully.');
     }
 }
